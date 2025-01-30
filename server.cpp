@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
         Binded the socket and allowed for the server to listen for incoming connections
     */
 
-    //Binding the socket to the IP address and port utilizing the bind() function
+    //Binding the socket to the IP address and port utilizing the bind() function - ServerOnly
 
     int bind(tcp_server_socket s, const struct sockaddr *addr, socklen_t addrlen);
 
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
 
     }
 
-    //Listen for simultaneous connections utilizing the listen() function
+    //Listen for simultaneous connections utilizing the listen() function - ServerONly
     int listen(tcp_server_socket s, int backLog);
 
     if(listen(tcp_server_socket, 5) == 0){
@@ -73,6 +73,8 @@ int main(int argc, char *argv[]){
         cout << "Socket listen() successful!!!" << endl; //Print a success message if listen is successful
 
     }
+
+  
 
 }
 

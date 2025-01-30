@@ -36,37 +36,37 @@ int main(int argc, char *argv[]){
     */
 
     //Binding the socket to the IP address and port utilizing the bind() function
-    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) == SOCKET_ERROR){
 
-        cout << "Socket bind() failed: " << WSAGetLastError() << endl; //Print an error message if bind fails
+    int bind(tcp_server_socket s, const struct sockaddr *addr, socklen_t addrlen);
+
+    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
+
+        perror("Socket bind() failed...") //Print an error message if bind fails
         closesocket(tcp_server_socket); 
-        WSACleanup();
+        exit(EXIT_FAILURE);
 
-        return 0;
     }
     else{
 
-        cout << "Socket bind() successful! " << endl; //Print a success message if bind is successful
+        cout << "Socket bind() successful!!!" << endl; //Print a success message if bind is successful
 
     }
 
     //Listen for simultaneous connections utilizing the listen() function
-    int listen(SOCKET s, int backLog);
+    int listen(tcp_server_socket s, int backLog);
 
-    if(listen(tcp_server_socket, 5) == SOCKET_ERROR){
+    if(listen(tcp_server_socket, 5) == 0){
 
-        cout << "Socket listen() failed: " << WSAGetLastError() << endl; //Print an error message if listen fails
+        perror("Socket listen() failed...") //Print an error message if listen fails
         closesocket(tcp_server_socket); 
-        WSACleanup();
+        exit(EXIT_FAILURE);
 
-        return 0;
     }
     else{
 
-        cout << "Socket listen() successful! " << endl; //Print a success message if listen is successful
+        cout << "Socket listen() successful!!!" << endl; //Print a success message if listen is successful
 
     }
-
 
 }
 

@@ -179,9 +179,9 @@ struct hostent{
 
 **Big Picture**
 
-1. Create a socket
-2. Get informatioon about dest host.
-3. Fill in dest addr structure.
+1. Create a socket.
+2. Get informatioon about destination host.
+3. Fill in destation address structure.
 4. Connect to remote host.
 5. Send/Receive data to dest.
-6. Close connection
+6. Close connection.

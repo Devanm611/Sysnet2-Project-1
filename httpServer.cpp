@@ -31,11 +31,42 @@ int main(){
     tcp_server_address.sin_port = htons(39756);      //Passing the port number - converting in right network byte order
     tcp_server_adress.sin_addr = INADDR_ANY;         //Connecting to 0.0.0.0
 
-    //binding the socket to the IP address and port
-    bind(tcp_server_socket, (struct sockaddr *) &tcp_server_address, sizeof(tcp_server_address)); //Parameters for socket
+    /*
+        Devan Rivera 1/30/2025
+        Binded the socket and allowed for the server to listen for incoming connections
+    */
 
-    //listen for simultaneous connections
-    listen(tcp_server_socket, 5); 
+    //Binding the socket to the IP address and port utilizing the bind() function
+    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) == SOCKET_ERROR){
+
+        cout << "Socket bind() failed: " << WSAGetLastError() << endl; //Print an error message if bind fails
+        closesocket(tcp_server_socket); 
+        WSACleanup();
+
+        return 0;
+    }
+    else{
+
+        cout << "Socket bind() successful! " << endl; //Print a success message if bind is successful
+
+    }
+
+    //Listen for simultaneous connections utilizing the listen() function
+    int listen(SOCKET s, int backLog);
+
+    if(listen(tcp_server_socket, 5) == SOCKET_ERROR){
+
+        cout << "Socket listen() failed: " << WSAGetLastError() << endl; //Print an error message if listen fails
+        closesocket(tcp_server_socket); 
+        WSACleanup();
+
+        return 0;
+    }
+    else{
+
+        cout << "Socket listen() successful! " << endl; //Print a success message if listen is successful
+
+    }
 
     int tcp_client_socket;
     tcp_client_socket = accept(tcp_server_socket, NULL, NULL); //Server socket to interact with client
@@ -47,9 +78,7 @@ int main(){
     close(tcp_server_socket);
     
     return 0;
-
 }
-
 
 
 

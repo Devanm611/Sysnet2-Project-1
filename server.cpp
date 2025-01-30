@@ -42,13 +42,37 @@ int main(int argc, char *argv[]){
     */
 
     //Binding the socket to the IP address and port utilizing the bind() function
-   
+
+    int bind(tcp_server_socket s, const struct sockaddr *addr, socklen_t addrlen);
+
+    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
+
+        perror("Socket bind() failed...") //Print an error message if bind fails
+        closesocket(tcp_server_socket); 
+        exit(EXIT_FAILURE);
+
+    }
+    else{
+
+        cout << "Socket bind() successful!!!" << endl; //Print a success message if bind is successful
+
+    }
 
     //Listen for simultaneous connections utilizing the listen() function
-   
+    int listen(tcp_server_socket s, int backLog);
 
-    //Accept incoming connections utilizing the accept() function
+    if(listen(tcp_server_socket, 5) == 0){
 
+        perror("Socket listen() failed...") //Print an error message if listen fails
+        closesocket(tcp_server_socket); 
+        exit(EXIT_FAILURE);
+
+    }
+    else{
+
+        cout << "Socket listen() successful!!!" << endl; //Print a success message if listen is successful
+
+    }
 
 }
 

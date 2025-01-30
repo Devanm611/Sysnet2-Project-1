@@ -8,6 +8,7 @@
 #include <unistd.h> //System calls (read, write, close)
 #include <sys/socket.h> //Socket functions
 #include <arpa/inet.h> //IP address function
+
 using namespace std;
 
 #define BUFFER_SIZE 4096
@@ -16,7 +17,7 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    int cp_server_socket;
+    int tcp_server_socket;
     int clientSocket;
 
     struct sockaddr_in tcp_server_address, clientAddr;
@@ -38,7 +39,9 @@ int main(int argc, char *argv[]){
 
     /*
         Devan Rivera 1/30/2025
-        Binded the socket and allowed for the server to listen for incoming connections
+        Worked on the Binding of the Socket
+        Worked on the Listening of the Socket
+        Worked on the Accepting of the incoming connection
     */
 
     //Binding the socket to the IP address and port utilizing the bind() function
@@ -47,14 +50,14 @@ int main(int argc, char *argv[]){
 
     if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
 
-        perror("Socket bind() failed...") //Print an error message if bind fails
+        perror("Socket bind() failed..."); //Print an error message if bind fails
         closesocket(tcp_server_socket); 
         exit(EXIT_FAILURE);
 
     }
     else{
 
-        cout << "Socket bind() successful!!!" << endl; //Print a success message if bind is successful
+        printf("Socket bind() successful!!!");//Print a success message if bind is successful
 
     }
 
@@ -63,16 +66,39 @@ int main(int argc, char *argv[]){
 
     if(listen(tcp_server_socket, 5) == 0){
 
-        perror("Socket listen() failed...") //Print an error message if listen fails
+        perror("Socket listen() failed..."); //Print an error message if listen fails
         closesocket(tcp_server_socket); 
         exit(EXIT_FAILURE);
 
     }
     else{
 
-        cout << "Socket listen() successful!!!" << endl; //Print a success message if listen is successful
+        printf("Socket listen() successful!!!"); //Print a success message if listen is successful
 
     }
+
+
+    //Accepting the incoming connection utilizing the accept() function
+    
+    new_socket = accept(tcp_server_socket, (struct sockaddr *)&address, &addrlen);
+
+    if(new_socket < 0){
+
+        perror("Socket accept() failed..."); //Print an error message if accept fails
+        closesocket(tcp_server_socket); 
+        exit(EXIT_FAILURE);
+
+    }
+    else{
+
+        printf("Socket accept() successful!!!"); //Print a success message if accept is successful
+
+    }
+
+    close(new_socket);
+    close(tcp_server_socket);
+
+    return 0;
 
 }
 

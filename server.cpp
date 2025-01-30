@@ -16,10 +16,10 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    int serverSocket;
+    int cp_server_socket;
     int clientSocket;
 
-    struct sockaddr_in serverAddr, clientAddr;
+    struct sockaddr_in tcp_server_address, clientAddr;
     socklen_t addrLen = sizeof(clientAddr);
     
 
@@ -30,42 +30,24 @@ int main(int argc, char *argv[]){
         exit(EXIT_FAILURE);
     }
 
+    //Address structure
+    memset(&tcp_server_address, 0, sizeof(tcp_server_address));
+    tcp_server_address.sin_family = AF_INET; 
+    tcp_server_address.sin_addr.s_addr = INADDR_ANY;   //Accept connections from any IP address
+    tcp_server_address.sin_port = 0; //Automatically bind to an unused port
+
     /*
         Devan Rivera 1/30/2025
         Binded the socket and allowed for the server to listen for incoming connections
     */
 
     //Binding the socket to the IP address and port utilizing the bind() function
-    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) == SOCKET_ERROR){
-
-        cout << "Socket bind() failed: " << WSAGetLastError() << endl; //Print an error message if bind fails
-        closesocket(tcp_server_socket); 
-        WSACleanup();
-
-        return 0;
-    }
-    else{
-
-        cout << "Socket bind() successful! " << endl; //Print a success message if bind is successful
-
-    }
+   
 
     //Listen for simultaneous connections utilizing the listen() function
-    int listen(SOCKET s, int backLog);
+   
 
-    if(listen(tcp_server_socket, 5) == SOCKET_ERROR){
-
-        cout << "Socket listen() failed: " << WSAGetLastError() << endl; //Print an error message if listen fails
-        closesocket(tcp_server_socket); 
-        WSACleanup();
-
-        return 0;
-    }
-    else{
-
-        cout << "Socket listen() successful! " << endl; //Print a success message if listen is successful
-
-    }
+    //Accept incoming connections utilizing the accept() function
 
 
 }

@@ -24,8 +24,8 @@ int main(int argc, char *argv[]){
     
 
     //Create the Socket
-    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if(serverSocket < 0){
+    cp_server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if(cp_server_socket < 0){
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
@@ -75,6 +75,13 @@ int main(int argc, char *argv[]){
     }
 
   
+    //Print server IP address and port number
+    cout << "Server IP address is: " << inet_ntoa(tcp_server_address.sin_addr) << endl;
+    cout << "Server port number is: " << ntohs(tcp_server_address.sin_port) << endl;
 
+    
+
+    close(serverSocket);
+    return 0;
 }
 

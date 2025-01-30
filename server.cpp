@@ -16,10 +16,10 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    int serverSocket;
+    int cp_server_socket;
     int clientSocket;
 
-    struct sockaddr_in serverAddr, clientAddr;
+    struct sockaddr_in tcp_server_address, clientAddr;
     socklen_t addrLen = sizeof(clientAddr);
     
 
@@ -29,6 +29,12 @@ int main(int argc, char *argv[]){
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
+
+    //Address structure
+    memset(&tcp_server_address, 0, sizeof(tcp_server_address));
+    tcp_server_address.sin_family = AF_INET; 
+    tcp_server_address.sin_addr.s_addr = INADDR_ANY;   //Accept connections from any IP address
+    tcp_server_address.sin_port = 0; //Automatically bind to an unused port
 
     /*
         Devan Rivera 1/30/2025

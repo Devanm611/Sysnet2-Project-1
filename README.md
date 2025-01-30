@@ -20,3 +20,19 @@ Server Data - Transfer
 Handle Request and Create Response
 
 closes and returns to loop
+
+**For Socket creation**
+
+struct sockaddr_in{
+
+    u_char          sin_len;
+
+    //normally not used
+    u_short         sin_family;
+    u_short         sin_port;
+    struct in_addr  sin_addr;
+    char            sin_zero[8]
+    //normally not used
+
+
+};

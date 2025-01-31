@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
         exit(EXIT_FAILURE);
     }
 
-    //Address structure
+    //Address structure of the http server
     memset(&tcp_server_address, 0, sizeof(tcp_server_address));
     tcp_server_address.sin_family = AF_INET; 
     tcp_server_address.sin_addr.s_addr = INADDR_ANY;   //Accept connections from any IP address

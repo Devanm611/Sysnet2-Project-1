@@ -14,7 +14,16 @@ using namespace std;
 #define BUFFER_SIZE 4096
 
 //Function on HTTP response
+string getHTTPResponse(const string &status, const string &contentType, const string &body){
 
+    string response = "HTTP/1.1 200 OK\r\n";
+    response += "Content-Type: text/html\r\n";
+    response += "Connection: Closed\r\n";
+    response += "\r\n";
+    response += "<html><body><h1>Hello World</h1></body></html>";
+
+    return response;
+}
 
 int main(int argc, char *argv[]){
 

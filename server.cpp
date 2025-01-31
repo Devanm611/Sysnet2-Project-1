@@ -20,6 +20,7 @@ string getHTTPResponse(const string &status, const string &contentType, const st
     ostringstream HTTPResponse;
     HTTPresponse << "HTTP/1.1 \n" << status << "Content Type: \n" << contentType << "Content Length: \n" << body.length() << "Connection: close\n" << body;
     return HTTPResponse.str();
+    
 }
 
 //Function to handle the client's connection

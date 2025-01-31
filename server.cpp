@@ -15,6 +15,7 @@ using namespace std;
 
 //Function on HTTP response
 
+
 int main(int argc, char *argv[]){
 
     int tcp_server_socket;
@@ -94,7 +95,8 @@ int main(int argc, char *argv[]){
         }
     }
 
+}
     close(tcp_server_socket);
     return 0;
-
 }
+

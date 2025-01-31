@@ -67,11 +67,7 @@ int main(int argc, char *argv[]){
 
     }
     else{
-
-        printf("Socket listen() successful!!!"); //Print a success message if listen is successful
-
-    }
-
+      
 
     cout << "Server listening on port: " << ntohs(tcp_server_address.sin_port) << endl;
     cout << "Server listening on IP: " << inet_ntoa(tcp_server_address.sin_addr) << endl;

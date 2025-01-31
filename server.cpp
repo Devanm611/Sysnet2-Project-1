@@ -44,7 +44,10 @@ int main(int argc, char *argv[]){
         Worked on the Accepting of the incoming connection
     */
 
-    //Bind the socket to the address and port
+    //Binding the socket to the IP address and port utilizing the bind() function
+
+    int bind(tcp_server_socket s, const struct sockaddr *addr, socklen_t addrlen);
+
     if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
 
         perror("Socket bind() failed..."); //Print an error message if bind fails
@@ -54,11 +57,13 @@ int main(int argc, char *argv[]){
     }
     else{
 
-        printf("Socket bind() successful!!!");//Print a success message if bind is successful
+        printf("Socket bind() successful!!!"); //Print a success message if bind is successful
 
     }
 
-    //Listen for incoming connections
+    //Listen for simultaneous connections utilizing the listen() function
+    int listen(tcp_server_socket s, int backLog);
+
     if(listen(tcp_server_socket, 5) < 0){
 
         perror("Socket listen() failed..."); //Print an error message if listen fails
@@ -67,34 +72,33 @@ int main(int argc, char *argv[]){
 
     }
     else{
-      
 
-    cout << "Server listening on port: " << ntohs(tcp_server_address.sin_port) << endl;
-    cout << "Server listening on IP: " << inet_ntoa(tcp_server_address.sin_addr) << endl;
+        printf("Socket listen() successful!!!"); //Print a success message if listen is successful
 
-
-    //Accept incoming connections
-    while (true){
-
-        clientSocket = accept(tcp_server_socket, (struct sockaddr*)&clientAddr, &addrLen);
-        
-        if(clientSocket < 0){
-
-            perror("Socket accept() failed..."); //Print an error message if accept fails
-            closesocket(tcp_server_socket); 
-            exit(EXIT_FAILURE);
-
-        }
-        else{
-
-            printf("Socket accept() successful!!!"); //Print a success message if accept is successful
-            thread clientThread(handleClient, clientSocket);
-            clientThread.detach(); // Detach the thread to handle the client independently
-        
-        }
     }
 
+
+    //Accepting the incoming connection utilizing the accept() function
+    
+    new_socket = accept(tcp_server_socket, (struct sockaddr *)&address, &addrlen);
+
+    if(new_socket < 0){
+
+        perror("Socket accept() failed..."); //Print an error message if accept fails
+        closesocket(tcp_server_socket); 
+        exit(EXIT_FAILURE);
+
+    }
+    else{
+
+        printf("Socket accept() successful!!!"); //Print a success message if accept is successful
+
+    }
+
+    close(new_socket);
     close(tcp_server_socket);
+
     return 0;
 
 }
+

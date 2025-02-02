@@ -23,7 +23,7 @@ using namespace std;
 string getHTTPResponse(const string &status, const string &contentType, const string &body){
 
     ostringstream HTTPResponse;
-    HTTPResponse << "HTTP/1.1 \n" << status << "\r\n";
+    HTTPResponse << "HTTP/1.1 " << status << "\r\n";
     HTTPResponse << "Content Type: " << contentType << "\r\n";
     HTTPResponse << "Content Length: " << body.size() << "\r\n";
     HTTPResponse << "Connection: close\r\n\r\n";

@@ -53,6 +53,7 @@ string getContentHTTP(const string &filePath){
 
     return "text/plain";
 }
+
 //Function to get the file content
 string getFileContent(const string &filePath) {
     ifstream file(filePath, ios::in | ios::binary);

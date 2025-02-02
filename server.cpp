@@ -1,9 +1,8 @@
 /*
-    Project1 - HTTP Server
-    COP4635 System & Networks 2
-    Team Members: Devan Rivera, Ashley Villegas
-
-*/
+ * Project1 - HTTP Server
+ * COP4635 System & Networks 2
+ * Team Members: Devan Rivera, Ashley Villegas
+ */
 
 #include <iostream>
 #include <fstream>
@@ -41,8 +40,17 @@ string getContentHTTP(const string &filePath){
     }
 
      if(filePath.rfind(".jpg") != string::npos && filePath.rfind(".jpg") == filePath.size() - 4){
-        return "image/jpg";
+        return "image/jpeg";
     }
+
+    if(filePath.rfind(".jpeg") != string::npos && filePath.rfind(".jpeg") == filePath.size() - 5){
+        return "image/jpeg";
+    }
+
+    if(filePath.rfind(".png") != string::npos && filePath.rfind(".png") == filePath.size() - 4){
+        return "image/png";
+    }
+
     return "text/plain";
 }
 //Function to get the file content
@@ -105,7 +113,7 @@ void handleClient(int clientSocket){
     }
     else{
 
-        string response = getHTTPResponse("405 Bad Request", "text/html", "<h1>400 Bad Request</h1>");
+        string response = getHTTPResponse("400 Bad Request", "text/html", "<h1>400 Bad Request</h1>");
         write(clientSocket, response.c_str(), response.size());
 
     }
@@ -118,7 +126,7 @@ void handleClient(int clientSocket){
 int generateRandomPort(){
 
     srand(time(0)); //Seed the random number generator
-    return (rand() % 99) + 6001; //Random port number between 6001 and 6099
+    return  60001 + (rand() % 99) ; //Random port number between 6001 and 6099
 
 }
 

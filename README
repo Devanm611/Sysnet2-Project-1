@@ -18,7 +18,7 @@ Make sure the following files are included in your project directory:
 - index.html
 - makefile
 - img.jpg
-- server2.cpp
+- server.cpp
 - testPresence.html
 
 

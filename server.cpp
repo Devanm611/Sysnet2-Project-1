@@ -1,3 +1,10 @@
+/*
+    Project1 - HTTP Server
+    COP4635 System & Networks 2
+    Team Members: Devan Rivera, Ashley Villegas
+
+*/
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -28,7 +35,7 @@ string getHTTPResponse(const string &status, const string &contentType, const st
 
 
 //Content of the HTTP response
-String getContent(const string &filenPath){
+string getContentHTTP(const string &filePath){
     if(filePath.rfind(".html") != string::npos && filePath.rfind(".html") == filePath.size() - 5){
         return "text/html";
     }
@@ -38,7 +45,18 @@ String getContent(const string &filenPath){
     }
     return "text/plain";
 }
-
+//Function to get the file content
+string getFileContent(const string &filePath) {
+    ifstream file(filePath, ios::in | ios::binary);
+    if (file) {
+        ostringstream content;
+        content << file.rdbuf();
+        file.close();
+        return content.str();
+    } else {
+        return "";
+    }
+}
 
 //Function to handle the client's connection
 void handleClient(int clientSocket){
@@ -73,7 +91,7 @@ void handleClient(int clientSocket){
             body << file.rdbuf();
             file.close();
 
-            string response = getHTTPResponse("200 OK", getContent(path), body.str());
+            string response = getHTTPResponse("200 OK", getContentHTTP(path), body.str());
             write(clientSocket, response.c_str(), response.size());
 
         }
@@ -112,7 +130,7 @@ int main(int argc, char *argv[]){
     struct sockaddr_in tcp_server_address, clientAddr;
     socklen_t addrLen = sizeof(clientAddr);
 
-    Cout << "Server starting..." << endl;
+    cout << "Server starting..." << endl;
 
     //Create the Socket
     tcp_server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -153,9 +171,9 @@ int main(int argc, char *argv[]){
     }
 
     cout << "Server running on port: " << selectedPort << endl;
-    cout << "Input in URL: http://localhost:" << selectedPort << "/index.html" << endl;
+    cout << "Input in URL: http://localhost:" << selectedPort << endl;
     cout << "Note: press Ctrl + C to stop the server" << endl;
-    Cout << "Waiting for incoming connections..." << endl;
+    cout << "Waiting for incoming connections..." << endl;
 
     //Accept incoming connections
     while(true){
@@ -195,4 +213,22 @@ int main(int argc, char *argv[]){
         Created a function to handle the client's connection
         Created a function to handle the HTTP response
 
+    */
+
+
+    /*
+        Ashley Villegas:
+        ~ 1/29/2025 ~
+        - Worked on the creation of the socket
+        - working on adjusting bind and server structure
+
+        ~ 1/31/2025 ~
+        - Worked on the adjusting listen and accept
+        - Worked on the generation of the random port number (dynamic)
+
+        ~ 2/1/2025 ~
+        - Worked on client connection
+        - Worked on the display of the server's port number
+        - Worked on file content and HTTP response
+    
     */

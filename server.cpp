@@ -17,11 +17,11 @@ using namespace std;
 string getHTTPResponse(const string &status, const string &contentType, const string &body){
 
     ostringstream HTTPResponse;
-    HTTPresponse << "HTTP/1.1 \n" << status << "\r\n";
-    HTTPresponse << "Content Type: " << contentType << "\r\n";
-    HTTPresponse << "Content Length: " << body.size() << "\r\n";
-    HTTPresponse << "Connection: close\r\n\r\n";
-    HTTPresponse << body;
+    HTTPResponse << "HTTP/1.1 \n" << status << "\r\n";
+    HTTPResponse << "Content Type: " << contentType << "\r\n";
+    HTTPResponse << "Content Length: " << body.size() << "\r\n";
+    HTTPResponse << "Connection: close\r\n\r\n";
+    HTTPResponse << body;
     return HTTPResponse.str();
     
 }
@@ -171,7 +171,7 @@ int main(int argc, char *argv[]){
         }
         else{
 
-            count << "Client connected: " << inet_ntoa(clientAddr.sin_addr) << endl; 
+            cout << "Client connected: " << inet_ntoa(clientAddr.sin_addr) << endl; 
             thread clientThread(handleClient, clientSocket);
             clientThread.detach(); // Detach the thread to handle the client independently
         

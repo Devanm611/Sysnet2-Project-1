@@ -14,31 +14,93 @@ using namespace std;
 #define BUFFER_SIZE 4096
 
 //Function on HTTP response
-
 string getHTTPResponse(const string &status, const string &contentType, const string &body){
 
     ostringstream HTTPResponse;
-    HTTPresponse << "HTTP/1.1 \n" << status << "Content Type: \n" << contentType << "Content Length: \n" << body.length() << "Connection: close\n" << body;
+    HTTPresponse << "HTTP/1.1 \n" << status << "\r\n";
+    HTTPresponse << "Content Type: " << contentType << "\r\n";
+    HTTPresponse << "Content Length: " << body.size() << "\r\n";
+    HTTPresponse << "Connection: close\r\n\r\n";
+    HTTPresponse << body;
     return HTTPResponse.str();
     
 }
+
+
+//Content of the HTTP response
+String getContent(const string &filenPath){
+    if(filePath.rfind(".html") != string::npos && filePath.rfind(".html") == filePath.size() - 5){
+        return "text/html";
+    }
+
+     if(filePath.rfind(".jpg") != string::npos && filePath.rfind(".jpg") == filePath.size() - 4){
+        return "image/jpg";
+    }
+    return "text/plain";
+}
+
 
 //Function to handle the client's connection
 void handleClient(int clientSocket){
     
     char buffer[BUFFER_SIZE];
-    memset(buffer, 0, BUFFER_SIZE);
-    int bytesRead = read(clientSocket, buffer, BUFFER_SIZE); //Reading client request
+    read(clientSocket, buffer, BUFFER_SIZE); //Reading client request
 
-    if(bytesRead < 0){
+    istringstream request(buffer);
+    string method;
+    string path;
+    string protocol;
 
-        perror("Reading from client failed..."); //Print an error message if reading from client fails
-        close(clientSocket);
-        return;
+    request >> method >> path >> protocol;
+
+    if(path == "/"){
+
+        path = "index.html";
+
+    }
+    else{
+        
+        path = path.substr(1);
+    }
+
+    if(method == "GET"){
+
+        ifstream file(path, ios::in | ios::binary);
+
+        if(file){
+
+            ostringstream body;
+            body << file.rdbuf();
+            file.close();
+
+            string response = getHTTPResponse("200 OK", getContent(path), body.str());
+            write(clientSocket, response.c_str(), response.size());
+
+        }
+        else{
+
+            string response = getHTTPResponse("404 Not Found", "text/html", "<h1>404 Not Found</h1>");
+            write(clientSocket, response.c_str(), response.size());
+
+        }
+
+    }
+    else{
+
+        string response = getHTTPResponse("405 Bad Request", "text/html", "<h1>400 Bad Request</h1>");
+        write(clientSocket, response.c_str(), response.size());
 
     }
 
     close(clientSocket);
+
+}
+
+//Generate a random port number
+int generateRandomPort(){
+
+    srand(time(0)); //Seed the random number generator
+    return (rand() % 99) + 6001; //Random port number between 6001 and 6099
 
 }
 
@@ -49,7 +111,8 @@ int main(int argc, char *argv[]){
 
     struct sockaddr_in tcp_server_address, clientAddr;
     socklen_t addrLen = sizeof(clientAddr);
-    
+
+    Cout << "Server starting..." << endl;
 
     //Create the Socket
     tcp_server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -59,14 +122,69 @@ int main(int argc, char *argv[]){
         exit(EXIT_FAILURE);
 
     }
+    cout << "Socket created successfully!" << endl;
 
-    //Address structure
+    //Address server tructure and bind the socket
     memset(&tcp_server_address, 0, sizeof(tcp_server_address));
     tcp_server_address.sin_family = AF_INET; 
     tcp_server_address.sin_addr.s_addr = INADDR_ANY;   //Accept connections from any IP address
-    tcp_server_address.sin_port = 0; //Automatically bind to an unused port
 
-    /*
+    int selectedPort = generateRandomPort(); //Generate a random port number
+    tcp_server_address.sin_port = htons(selectedPort); //Convert the port number to network byte order
+    cout << "Server assigned to port: " << selectedPort << endl;
+
+    //Bind part
+    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
+
+        perror("Socket bind() failed..."); //Print an error message if bind fails
+        close(tcp_server_socket); 
+        exit(EXIT_FAILURE);
+
+    }
+    cout << "Socket bind successful! Port: " << selectedPort << endl;
+
+    //Listen for incoming connections
+    if(listen(tcp_server_socket, 10) < 0){
+
+        perror("Socket listen() failed..."); //Print an error message if listen fails
+        close(tcp_server_socket); 
+        exit(EXIT_FAILURE);
+
+    }
+
+    cout << "Server running on port: " << selectedPort << endl;
+    cout << "Input in URL: http://localhost:" << selectedPort << "/index.html" << endl;
+    cout << "Note: press Ctrl + C to stop the server" << endl;
+    Cout << "Waiting for incoming connections..." << endl;
+
+    //Accept incoming connections
+    while(true){
+
+        clientSocket = accept(tcp_server_socket, (struct sockaddr*)&clientAddr, &addrLen);
+        
+        if(clientSocket < 0){
+
+            perror("Socket accept() failed..."); //Print an error message if accept fails
+            close(tcp_server_socket);
+            exit(EXIT_FAILURE);
+
+        }
+        else{
+
+            count << "Client connected: " << inet_ntoa(clientAddr.sin_addr) << endl; 
+            thread clientThread(handleClient, clientSocket);
+            clientThread.detach(); // Detach the thread to handle the client independently
+        
+        }
+    }
+
+    close(tcp_server_socket);
+    
+    return 0;
+}
+
+
+ /*
         Devan Rivera 1/29/2025
         Worked on the Binding of the Socket
         Worked on the Listening of the Socket
@@ -78,55 +196,3 @@ int main(int argc, char *argv[]){
         Created a function to handle the HTTP response
 
     */
-
-    //Bind the socket to the address and port
-    if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
-
-        perror("Socket bind() failed..."); //Print an error message if bind fails
-        close(tcp_server_socket); 
-        exit(EXIT_FAILURE);
-
-    }
-    else{
-
-        printf("Socket bind() successful!!!");//Print a success message if bind is successful
-
-    } 
-
-    cout << "Server listening on ephemeral port: " << ntohs(tcp_server_address.sin_port) << endl;
-    cout << "Server listening on IP: " << inet_ntoa(tcp_server_address.sin_addr) << endl;
-
-    //Listen for incoming connections
-    if(listen(tcp_server_socket, 5) < 0){
-
-        perror("Socket listen() failed..."); //Print an error message if listen fails
-        close(tcp_server_socket); 
-        exit(EXIT_FAILURE);
-
-    }
-
-    //Accept incoming connections
-    while(true){
-
-        clientSocket = accept(tcp_server_socket, (struct sockaddr*)&clientAddr, &addrLen);
-        
-        if(clientSocket < 0){
-
-            perror("Socket accept() failed..."); //Print an error message if accept fails
-            closesocket(tcp_server_socket); 
-            exit(EXIT_FAILURE);
-
-        }
-        else{
-
-            printf("Socket accept() successful!!!"); //Print a success message if accept is successful
-            thread clientThread(handleClient, clientSocket);
-            clientThread.detach(); // Detach the thread to handle the client independently
-        
-        }
-    }
-
-    close(tcp_server_socket);
-    
-    return 0;
-}

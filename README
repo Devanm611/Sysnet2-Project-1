@@ -15,6 +15,7 @@ The server runs indefinitely until manually stopped and supports multiple client
 
 **Required Files**
 Make sure the following files are included in your project directory:
+
 - index.html
 - makefile
 - img.jpg
@@ -24,7 +25,7 @@ Make sure the following files are included in your project directory:
 
 ## Running the Program (Using WSL: Ubuntu)
 Step 1: compile the makefile
-        Comand: make
+        Command: make
 
         ~ If there are any errors, 
           Run: make clean and rerun make

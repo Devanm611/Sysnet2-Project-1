@@ -1,0 +1,54 @@
+# Project1 - HTTP Server
+COP4635 - System & Networks 2
+Team Members: Devan Rivera, Ashley Villegas
+
+## Project Description
+This project implements a multi-threaded HTTP server in C++. The server dynamically assigns a port between 60001-60099, handles HTTP GET requests, and serves HTML and image files. 
+
+It correctly returns:
+- 200 OK for valid files.
+- 404 Not Found for missing files.
+- 400 Bad Request for unsupported HTTP methods.
+
+The server runs indefinitely until manually stopped and supports multiple clients simultaneously using multithreading.
+
+
+**Required Files**
+Make sure the following files are included in your project directory:
+- index.html
+- makefile
+- img.jpg
+- server2.cpp
+- testPresence.html
+
+
+## Running the Program (Using SSH Client)
+Step 1: compile the makefile
+        Comand: make
+
+        ~ If there are any errors, 
+          Run: make clean and rerun make
+
+Step 2: Once compile run executable
+        Executable: ./httpServer
+
+Step 3: (Using Local Machine) - Find the URL and implement into a browser
+        URL: http://localhost:<PORT#>
+        Example: http://localhost:6783
+
+        (Using Remote Server (via SSH)) - 
+            1. The port number will be given
+                Example: Server running on port: 60093
+
+            1. Find your server’s IP: 
+                Command: hostname -I
+                Example: 143.88.68.24
+
+            2. Then use http://<SERVER_IP>:<PORT#> on the browser
+                Example: http://143.88.68.24:6783
+
+Step 4: Test the links
+
+Step 5: Once your done, to stop the server
+        press Ctrl + C
+

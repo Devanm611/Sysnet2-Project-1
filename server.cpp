@@ -239,5 +239,6 @@ int main(int argc, char *argv[]){
         - Worked on client connection
         - Worked on the display of the server's port number
         - Worked on file content and HTTP response
+        - fixed minor details
     
     */

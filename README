@@ -44,7 +44,7 @@ Step 5: Once your done, to stop the server
 
 
 
-Alternative:(Using Remote Server (via SSH - Putty))
+Alternative:(Using Remote Server (via SSH - Putty only))
 
 Step 1: compile the makefile
         Comand: make
@@ -60,8 +60,9 @@ Step 2: Once compiled run executable
         Example: Server running on port: 60093
 
 
-Step 3: Keep the executable running and open a new session, 
-        where server.cpp is located.
+Step 3: Keep the executable running and open a new session/terminal,
+        find the directory where server.cpp is located.
+        Then follow instruction below:
 
 1. To test 200 OK the Server from PuTTY:
    Command: curl -v http://localhost:<PORT>

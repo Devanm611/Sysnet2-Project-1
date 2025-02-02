@@ -35,6 +35,7 @@ string getHTTPResponse(const string &status, const string &contentType, const st
 
 //Content of the HTTP response
 string getContentHTTP(const string &filePath){
+
     if(filePath.rfind(".html") != string::npos && filePath.rfind(".html") == filePath.size() - 5){
         return "text/html";
     }
@@ -52,17 +53,19 @@ string getContentHTTP(const string &filePath){
     }
 
     return "text/plain";
+
 }
 
 //Function to get the file content
 string getFileContent(const string &filePath) {
     ifstream file(filePath, ios::in | ios::binary);
-    if (file) {
+    if(file){
         ostringstream content;
         content << file.rdbuf();
         file.close();
         return content.str();
-    } else {
+    } 
+    else{
         return "";
     }
 }
@@ -160,7 +163,7 @@ int main(int argc, char *argv[]){
     tcp_server_address.sin_port = htons(selectedPort); //Convert the port number to network byte order
     cout << "Server assigned to port: " << selectedPort << endl;
 
-    //Bind part
+    //Binding of server socket
     if(bind(tcp_server_socket, (struct sockaddr*)&tcp_server_address, sizeof(tcp_server_address)) < 0){
 
         perror("Socket bind() failed..."); //Print an error message if bind fails
@@ -218,9 +221,14 @@ int main(int argc, char *argv[]){
         Worked on the Accepting of the incoming connection
 
         1/30/2025
-        Fixed minor variable
+        Fixed minor details
         Created a function to handle the client's connection
         Created a function to handle the HTTP response
+
+        1/31/2025
+        Worked on the creation of the HTTP response
+        Started on the handleClient function
+        Fixed minor details
 
     */
 

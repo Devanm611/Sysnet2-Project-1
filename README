@@ -111,5 +111,5 @@ Expected Result (terminal):
 < Content Length: 24
 < Connection: close
 
-Step 4: Once your done, to stop the server
-        press Ctrl + C
+Step 4: Once your done, stop the server by
+        press Ctrl + C and close all terminals

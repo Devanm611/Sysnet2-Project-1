@@ -35,7 +35,6 @@ string getHTTPResponse(const string &status, const string &contentType, const st
 
 //Content of the HTTP response
 string getContentHTTP(const string &filePath){
-
     if(filePath.rfind(".html") != string::npos && filePath.rfind(".html") == filePath.size() - 5){
         return "text/html";
     }
@@ -53,7 +52,6 @@ string getContentHTTP(const string &filePath){
     }
 
     return "text/plain";
-
 }
 
 //Function to get the file content
@@ -64,67 +62,50 @@ string getFileContent(const string &filePath) {
         content << file.rdbuf();
         file.close();
         return content.str();
-    } 
-    else{
+    } else{
         return "";
     }
 }
 
 //Function to handle the client's connection
-void handleClient(int clientSocket){
-    
-    char buffer[BUFFER_SIZE];
-    read(clientSocket, buffer, BUFFER_SIZE); //Reading client request
+void handleClient(int clientSocket) {
+    char buffer[BUFFER_SIZE] = {0};
+    read(clientSocket, buffer, BUFFER_SIZE); // Read HTTP request
 
     istringstream request(buffer);
-    string method;
-    string path;
-    string protocol;
-
+    string method, path, protocol;
     request >> method >> path >> protocol;
 
-    if(path == "/"){
+    cout << "\n Client Connected from: " << clientSocket << endl;
+    cout << "Received Request: \n" << buffer << endl;  //Print the request
 
-        path = "index.html";
+    if (path == "/") path = "index.html";
+    else path = path.substr(1);
 
-    }
-    else{
-        
-        path = path.substr(1);
-    }
-
-    if(method == "GET"){
-
+    if (method == "GET") {
         ifstream file(path, ios::in | ios::binary);
-
-        if(file){
-
+        if (file) {
             ostringstream body;
             body << file.rdbuf();
             file.close();
-
             string response = getHTTPResponse("200 OK", getContentHTTP(path), body.str());
+
+            cout << "Response Sent: 200 OK (" << path << ")\n";
             write(clientSocket, response.c_str(), response.size());
-
-        }
-        else{
-
+        } else {
             string response = getHTTPResponse("404 Not Found", "text/html", "<h1>404 Not Found</h1>");
+            cout << "Response Sent: 404 Not Found (" << path << ")\n";
             write(clientSocket, response.c_str(), response.size());
-
         }
-
-    }
-    else{
-
+    } else {
         string response = getHTTPResponse("400 Bad Request", "text/html", "<h1>400 Bad Request</h1>");
+        cout << "Response Sent: 400 Bad Request (Invalid Method: " << method << ")\n";
         write(clientSocket, response.c_str(), response.size());
-
     }
 
     close(clientSocket);
-
 }
+
 
 //Generate a random port number
 int generateRandomPort(){
